@@ -7,4 +7,3 @@ A aplicação esta disponivel no endereço abaixo, passando no campo `zipcode` o
 https://goexpert-deploy-cloud-run-yjdwqephhq-uc.a.run.app/weather?zipcode=<CEP>
 ```
 
-

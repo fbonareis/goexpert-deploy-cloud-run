@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    environment:
+      - WEATHER_API_KEY=<API_KEY>
+    ports:
+      - "8080:8080"

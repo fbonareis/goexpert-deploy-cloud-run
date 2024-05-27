@@ -8,6 +8,12 @@ import (
 	"math"
 	"net/http"
 	"os"
+	"strings"
+	"unicode"
+
+	"golang.org/x/text/runes"
+	"golang.org/x/text/transform"
+	"golang.org/x/text/unicode/norm"
 )
 
 const (
@@ -82,10 +88,24 @@ func (s *RealZipCodeService) GetLocation(zipCode string) (*LocationResponse, err
 	return &l, nil
 }
 
+func removeAccents(s string) string {
+	t := transform.Chain(norm.NFD, runes.Remove(runes.In(unicode.Mn)), norm.NFC)
+	output, _, e := transform.String(t, s)
+	if e != nil {
+		panic(e)
+	}
+	return output
+}
+
 func (s *RealWeatherService) GetWeatherFromCity(city string) (*WeatherResponse, error) {
 	apiKey := os.Getenv("WEATHER_API_KEY")
+	if apiKey == "" {
+		return nil, errors.New("weather api key not found")
+	}
 
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/current.json?key=%s&q=%s&aqi=no", baseURLweatherAPI, apiKey, city), nil)
+	c := strings.ReplaceAll(removeAccents(city), " ", "%20")
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/current.json?key=%s&q=%s&aqi=no", baseURLweatherAPI, apiKey, c), nil)
 	if err != nil {
 		return nil, err
 	}

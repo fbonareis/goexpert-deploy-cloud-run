@@ -2,7 +2,10 @@ module github.com/fbonareis/goexpert-deploy-cloud-run
 
 go 1.21.1
 
-require github.com/stretchr/testify v1.9.0
+require (
+	github.com/stretchr/testify v1.9.0
+	golang.org/x/text v0.15.0
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
